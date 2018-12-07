@@ -1,0 +1,97 @@
+.container{
+  width: 100%;
+  background: #f3f3f3;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.container > .header{
+  width: 100%;
+  background: #ffffff;
+  height: 60px;
+}
+
+
+.container > .header > .header-panel{
+  width: 1300px;
+  margin: auto;
+  height: 60px;
+}
+
+.container > .main{
+  padding: 20px;
+}
+.container > .main > .main-panel{
+  width: 1300px;
+  margin: auto;
+  background: #fff;
+  box-shadow: 0 0 20px 2px #e1e1e1;
+  padding: 20px;
+  padding-left: 0;
+
+}
+.main-left{
+  width: 200px;
+  height: 100%;
+}
+.main-right{
+  width: 1080px;
+  margin-left: 20px;
+}
+.main-right-top{
+  height: 50px;
+  border-bottom: 1px solid #e1e1e1
+}
+.main-right-panel{
+  padding-top: 15px;
+  overflow: hidden
+}
+.main-right-panel-o{
+  width: 1097px;
+  overflow-x: hidden;
+  overflow-y: scroll
+}
+.el-menu-vertical{
+  height: 100%;
+}
+
+
+.container > .footer{
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  color: #888;
+  font-size: 12px;
+  text-align: center
+}
+
+.w-250{
+  width: 250px;
+}
+.w-800{
+  width: 800px
+}
+.dropdown-item{
+  width: 150px;
+  cursor: pointer;
+  text-align: center
+}
+.fo-danger{
+  color: #F56C6C
+}
+.table-header{
+  line-height: normal;
+  padding: 0
+}
+.filter-t{
+  height: 30px;
+  width: 55px;
+  border-right: 1px solid #e1e1e1;
+
+}
+.filter-input{
+  margin-right: 5px;
+  width: 150px
+}
+
+
