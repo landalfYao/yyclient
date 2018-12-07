@@ -31,6 +31,7 @@ let login = {
           username: this.formData.username,
           password: this.yzy.encrypt(this.formData.password)
         },function(res){
+          this.loading = false
           if(res.code == 1){
             that.$message({
               type: 'success',

@@ -16,8 +16,8 @@
       <div class="panel-between item-center">
         <el-button-group>
           <el-button type="danger" plain icon="el-icon-delete"></el-button>
-          <el-button type="ghost" icon="el-icon-edit"></el-button>
-          <el-button type="ghost" icon="el-icon-share"></el-button>
+          <el-button type="success" plain >启用用户</el-button>
+          <el-button type="warning" plain >禁用用户</el-button>
         </el-button-group>
         <el-select v-model="query.pageSize" placeholder="请选择" style="width:150px" @change="handleSizeChange">
           <el-option
@@ -33,14 +33,16 @@
 
     <el-table :data="tableData" ref="multipleTable" tooltip-effect="dark"
      border size="small" style="width: 100%;margin-top:15px"
-    @selection-change="handleSelectionChange">
+    @selection-change="handleSelectionChange" @filter-change="filterChange">
       <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column prop="pk_id" label="ID" > </el-table-column>
       <el-table-column prop="username" label="用户名" > </el-table-column>
       <el-table-column prop="nick_name" label="昵称" > </el-table-column>
       <el-table-column prop="phone_number" label="手机号" > </el-table-column>
       <el-table-column prop="email" label="邮箱" > </el-table-column>
-      <el-table-column prop="user_state" label="状态" >
+      <el-table-column prop="user_state" label="状态" column-key="user_state"
+        :filters="[{text:'启用',value:'AVAILABLE'},{text:'禁用',value:'DISABLE'}]" 
+        >
         <template slot-scope="scope">
           <el-tag :type="scope.row.user_state == 'AVAILABLE' ? 'success':'warning'">{{scope.row.user_state == 'AVAILABLE' ? '可用':'禁用'}}</el-tag>
         </template>

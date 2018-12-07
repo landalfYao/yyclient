@@ -4,9 +4,12 @@ let list = {
     return {
       multipleSelection:[],
       query:{
+        wheres:'',
+        sorts:'update_datetime desc,create_datetime desc',
         pageIndex:1,
         pageSize:10
       },
+      wheres:[],
       pageSize:this.yzy.pageSize,
       total:0,
       tableData: [{
@@ -24,6 +27,15 @@ let list = {
   },
   methods:{
     getList(){
+      let sq = ''
+      for(let i in this.wheres){
+        sq = this.wheres[i].value + ' and '
+      }
+      if(sq != ''){
+        this.query.wheres = sq.substring(0,sq.length-4)
+      }else{
+        this.query.wheres = ''
+      }
       this.yzy.post('user/get',this.query,function(res){
         if(res.code == 1){
           for(let i in res.data.list){
@@ -39,6 +51,39 @@ let list = {
         }
       })
     },
+    filterChange(e){
+      let temp = -1
+      let arr = this.wheres
+      let resArr = e['user_state']
+      
+      for(let i in resArr){
+        if(resArr[i].indexOf("'")<0){
+          resArr[i] = "'"+resArr[i]+"'"
+        } 
+      }
+
+      let sq = 'user_state in ('+resArr+')'
+      for(let i in arr){
+        if(arr[i].label == 'user_state'){
+          temp = i
+        }
+      }
+      
+      if(resArr.length == 0){
+        if(temp != -1){
+          this.wheres.splice(temp,1)
+        }
+      }else{
+        if(temp == -1){
+          this.wheres.push({label:'user_state',value:sq})
+        }else{
+          this.wheres[temp].value = sq
+        }
+      }
+      
+      this.getList()
+    },
+    
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
