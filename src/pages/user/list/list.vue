@@ -2,10 +2,7 @@
   <div>
 
     <div  class="panel-start wrap">
-      <el-input placeholder="搜索" class="filter-input"></el-input>
-      <el-input placeholder="搜索" class="filter-input"></el-input>
-      <el-input placeholder="搜索" class="filter-input"></el-input>
-      <el-input placeholder="搜索" class="filter-input"></el-input>
+      <el-input placeholder="搜索" v-for="(item,index) in searchList"  :placeholder="item.label" :key="index" class="filter-input"></el-input>
       <el-button-group >
         <el-button type="ghost" >清除</el-button>
         <el-button type="primary" >搜索</el-button>
@@ -15,9 +12,9 @@
     <div style="margin-top:15px">
       <div class="panel-between item-center">
         <el-button-group>
-          <el-button type="danger" plain icon="el-icon-delete"></el-button>
-          <el-button type="success" plain >启用用户</el-button>
-          <el-button type="warning" plain >禁用用户</el-button>
+          <!-- <el-button type="danger" plain icon="el-icon-delete"></el-button> -->
+          <el-button type="success" plain @click="changeUserState('available')">启用用户</el-button>
+          <el-button type="warning" plain @click="changeUserState('disable')">禁用用户</el-button>
         </el-button-group>
         <el-select v-model="query.pageSize" placeholder="请选择" style="width:150px" @change="handleSizeChange">
           <el-option

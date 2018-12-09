@@ -12,13 +12,14 @@ let list = {
       wheres:[],
       pageSize:this.yzy.pageSize,
       total:0,
-      tableData: [{
-        id: '12987122',
-        name: '王小虎',
-        amount1: '234',
-        amount2: '3.2',
-        amount3: 10
-      },]
+      tableData: [],
+      searchList:[
+        {label:'ID',key:'pk_id'},
+        {label:'用户名',key:'username'},
+        {label:'昵称',key:'nick_name'},
+        {label:'手机号',key:'phone_number'},
+        {label:'邮箱',key:'email'}
+      ]
     }
   },
   mounted(){
@@ -61,7 +62,7 @@ let list = {
           resArr[i] = "'"+resArr[i]+"'"
         } 
       }
-
+      
       let sq = 'user_state in ('+resArr+')'
       for(let i in arr){
         if(arr[i].label == 'user_state'){
@@ -83,9 +84,51 @@ let list = {
       
       this.getList()
     },
-    
+    changeUserState(state){
+
+      if(state == 'disable'){
+        this.$confirm('此操作将使用户被迫下线, 是否继续?', '提示', {
+          confirmButtonText: '继续',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          that.update('user/state/'+state,{ids:that.filterIds().toString()})
+        }).catch(() => {
+          that.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });        
+      }else{
+        that.update('user/state/'+state,{ids:that.filterIds().toString()})
+      }
+    },
+    filterIds(){
+      let arr = []
+      for(let i in this.multipleSelection){
+        arr.push(this.multipleSelection[i].pk_id)
+      }
+      return arr
+    },
+    update(url,data){
+      this.yzy.post(url,data,function(res){
+        if(res.code == 1){
+          that.$message({
+            type: 'success',
+            message: res.msg
+          })
+          that.getList()
+        }else{
+          that.$message({
+            type: 'error',
+            message: res.msg
+          })
+        }
+      })
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log(val)
     },
     handleSizeChange(e){
       this.getList()

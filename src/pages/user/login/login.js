@@ -31,7 +31,7 @@ let login = {
           username: this.formData.username,
           password: this.yzy.encrypt(this.formData.password)
         },function(res){
-          this.loading = false
+          that.loading = false
           if(res.code == 1){
             that.$message({
               type: 'success',
@@ -40,6 +40,8 @@ let login = {
             sessionStorage.setItem('token',res.token)
             sessionStorage.setItem('uid',res.data.pk_id)
             sessionStorage.setItem('userInfo',res.data)
+            sessionStorage.setItem('username',res.data.username)
+            sessionStorage.setItem('pwd',res.data.pwd)
             that.$router.push({path:'/'})
           }else{
             that.$message({

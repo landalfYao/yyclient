@@ -17,13 +17,21 @@ let main = {
   mounted () {
     that = this
     this.onResize()
-    this.initNav()
+    this.initUser()
+    
   },
   methods:{
     //监听窗口变化
     onResize(){
       window.onresize=function(){
         that.innerHeight = window.innerHeight
+      }
+    },
+    initUser(){
+      if(sessionStorage.getItem('token')){
+        this.initNav()
+      }else{
+        this.$router.push({path:'/login'})
       }
     },
     //初始化导航

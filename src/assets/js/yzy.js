@@ -40,9 +40,39 @@ const yzy = {
         }
     })
   },
+  //getToken
+  getToken(cb){
+    
+      this.http('user/login','POST',{
+        username: sessionStorage.getItem('username'),
+        password: sessionStorage.getItem('pwd')
+      },function(res){
+        if(res.code == 1){
+          
+          sessionStorage.setItem('token',res.token)
+          cb(true)
+        }else{
+          cb(false)
+        }
+      })
+    
+    
+  },
   //post
   post(url,data,cb){
-    this.http(url,'POST',data,cb,{
+    this.http(url,'POST',data,function(res){
+      if(res.code == -1){
+        yzy.getToken(function(res2){
+          if(res2){
+            yzy.post(url,data,cb)
+          }else{
+            cb(res)
+          }
+        })
+      }else{
+        cb(res)
+      }
+    },{
       token:sessionStorage.getItem('token'),
       uid:sessionStorage.getItem('uid')
     })
