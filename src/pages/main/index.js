@@ -8,11 +8,14 @@ let main = {
       topNav:[],
       nav:[],
       defaultMeun: '',
-      defaultActive:''
+      defaultActive:'',
+      linkName:''
     }
   },
   watch:{
-
+    $route(){
+      this.linkName = this.$route.name
+    }
   },
   mounted () {
     that = this
@@ -50,6 +53,9 @@ let main = {
 
     logout () {
       this.$router.push({path:'/login'})
+    },
+    navSelect(e){
+      this.$router.push({path:e})
     }
   }
 

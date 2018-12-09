@@ -33,13 +33,21 @@ let list = {
       }else{
         this.query.wheres = ''
       }
-      this.yzy.post('user/get',this.query,function(res){
+      this.yzy.get('auth/cate/get',this.query,function(res){
+        
         if(res.code == 1){
-          for(let i in res.data.list){
-            res.data.list[i].update_datetime = new Date(res.data.list[i].update_datetime).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+          let rl = res.data
+          let arr = []
+          for(let i in rl){
+            arr.push({name:rl[i].cate_name,sort:rl[i].sort,is_show:rl[i].is_show,ut:rl[i].update_datetime,cate_id:rl[i].pk_id})
+            for(let j in rl[i].auths){
+              arr.push({name:'——'+rl[i].auths[j].name,auth_id:rl[i].auths[j].pk_id,cate_id:rl[i].auths[j].cate_id,api_url:rl[i].auths[j].api_url})
+            }
           }
-          that.tableData = res.data.list
-          that.total = res.data.total
+          // for(let i in res.data.list){
+          //   res.data.list[i].update_datetime = new Date(res.data.list[i].update_datetime).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+          // }
+          that.tableData = arr
         }else{
           that.$message({
             type: 'error',

@@ -31,22 +31,19 @@
     <el-table :data="tableData" ref="multipleTable" tooltip-effect="dark"
      border size="small" style="width: 100%;margin-top:15px"
     @selection-change="handleSelectionChange" @filter-change="filterChange">
-      <el-table-column type="selection" width="55"> </el-table-column>
-      <el-table-column prop="pk_id" label="ID" > </el-table-column>
-      <el-table-column prop="username" label="用户名" > </el-table-column>
-      <el-table-column prop="nick_name" label="昵称" > </el-table-column>
-      <el-table-column prop="phone_number" label="手机号" > </el-table-column>
-      <el-table-column prop="email" label="邮箱" > </el-table-column>
-      <el-table-column prop="user_state" label="状态" column-key="user_state"
-        :filters="[{text:'启用',value:'AVAILABLE'},{text:'禁用',value:'DISABLE'}]" 
-        >
+      <el-table-column type="selection" width="55"> </el-table-column>    
+      <el-table-column prop="name" label="名称" > </el-table-column>
+      <el-table-column prop="remarks" label="备注" > </el-table-column>
+      <el-table-column prop="is_show" label="状态" column-key="user_state"
+        :filters="[{text:'显示',value:1},{text:'关闭',value:0}]" >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.user_state == 'AVAILABLE' ? 'success':'warning'">{{scope.row.user_state == 'AVAILABLE' ? '可用':'禁用'}}</el-tag>
+          <el-tag :type="scope.row.is_show == 1 ? 'success':'warning'">{{scope.row.is_show == 1 ? '显示':'关闭'}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="update_datetime" label="最近更新" > </el-table-column>
+      <el-table-column prop="序号" label="sort" > </el-table-column>
+      <el-table-column prop="ut" label="最近更新" > </el-table-column>
     </el-table>
-    <div class="panel-end">
+    <!-- <div class="panel-end">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -57,7 +54,7 @@
         style="margin-top:15px"
         >
       </el-pagination>
-    </div>
+    </div> -->
 
 
   </div>

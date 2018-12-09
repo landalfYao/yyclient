@@ -32,7 +32,8 @@
           <el-menu
             :default-active="defaultActive"
             :unique-opened='true'
-            class="el-menu-vertical">
+            class="el-menu-vertical"
+            @select="navSelect">
             <el-submenu v-for="(item1,index1) in nav" :key="index1" :index="index1+''">
               <template slot="title">
                 <i :class="item1.icon"></i>
@@ -46,12 +47,9 @@
           <div class="main-right-top panel-between">
             <div>
               <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/' }" ><span class="fo-g">首页</span></el-breadcrumb-item>
-                <el-breadcrumb-item><span class="fo-g">活动管理</span></el-breadcrumb-item>
-                <el-breadcrumb-item><span class="fo-g">活动列表</span></el-breadcrumb-item>
-                <el-breadcrumb-item><span class="fo-g">活动详情</span></el-breadcrumb-item>
+                <el-breadcrumb-item><span class="fo-g">{{linkName}}</span></el-breadcrumb-item>
               </el-breadcrumb>
-              <div class="fo-36 ma-t10">活动详情</div>
+              <div class="fo-36 ma-t10">{{linkName}}</div>
             </div>
             <div>
               <div >

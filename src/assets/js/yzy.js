@@ -20,6 +20,33 @@ const yzy = {
     {label:'每页1000条',value:1000},
     {label:'每页10000条',value:10000}
   ],
+  //初始化筛选内容
+  initFilterSearch(labels,keys){
+    let _labels = labels
+    let _keys = keys
+    let arr = []
+    for(let i in _labels){
+      arr.push({label:_labels[i],key:_keys[i],value:''})
+    }
+    return arr
+  },
+  //筛选过滤器
+  filterSearch(data,wheres){
+    let _data = data
+    let _wheres = wheres
+    let temp = -1
+      for(let i in _wheres){
+        if(_wheres[i].label == _data.key){
+          temp = i
+        }
+      }
+      if(temp == -1){
+        _wheres.push({label:_data.key,value:_data.key+' like "%'+_data.value+'%"'})
+      }else{
+        _wheres[temp].value = _data.key+' like "%'+_data.value+'%"'
+      }
+      return _wheres
+  },
   //http请求
   http (url, type, data,cb,headers){
     let options = {
