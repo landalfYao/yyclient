@@ -10,6 +10,7 @@ let list = {
         pageSize:10
       },
       wheres:[],
+      cates:[],
       pageSize:this.yzy.pageSize,
       total:0,
       tableData: [],
@@ -33,47 +34,61 @@ let list = {
       }else{
         this.query.wheres = ''
       }
-      this.yzy.get('auth/cate/get',this.query,function(res){
-        
-        if(res.code == 1){
-          let rl = res.data
-          let arr = []
-          for(let i in rl){
-            arr.push({name:rl[i].cate_name,sort:rl[i].sort,is_show:rl[i].is_show,ut:rl[i].update_datetime,cate_id:rl[i].pk_id})
-            for(let j in rl[i].auths){
-              arr.push({name:'——'+rl[i].auths[j].name,auth_id:rl[i].auths[j].pk_id,cate_id:rl[i].auths[j].cate_id,api_url:rl[i].auths[j].api_url})
-            }
+      if(global.authList && global.authList.length > 0){
+        let rl = global.authList
+        let arr = []
+        for(let i in rl){
+          arr.push({name:rl[i].cate_name,sort:rl[i].sort,is_show:rl[i].is_show,ut:rl[i].update_datetime,cate_id:rl[i].pk_id,remarks:rl[i].remarks,api_url:'无',id:rl[i].pk_id,iscate:true})
+          for(let j in rl[i].auths){
+            arr.push({id:rl[i].auths[j].pk_id,name:'——'+rl[i].auths[j].name,auth_id:rl[i].auths[j].pk_id,cate_id:rl[i].auths[j].cate_id,api_url:rl[i].auths[j].api_url,remarks:'无',ut:rl[i].auths[j].create_datetime,iscate:false})
           }
-          // for(let i in res.data.list){
-          //   res.data.list[i].update_datetime = new Date(res.data.list[i].update_datetime).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
-          // }
-          that.tableData = arr
-        }else{
-          that.$message({
-            type: 'error',
-            message: res.msg
-          })
         }
-      })
+        that.cates  = global.authList
+        that.tableData = arr
+      }else{
+        this.yzy.get('auth/cate/get',this.query,function(res){
+
+          if(res.code == 1){
+            let rl = res.data
+            let arr = []
+            let arr2 = []
+            for(let i in rl){
+              arr.push({name:rl[i].cate_name,sort:rl[i].sort,is_show:rl[i].is_show,ut:rl[i].update_datetime,cate_id:rl[i].pk_id,remarks:rl[i].remarks,api_url:'无',id:rl[i].pk_id,iscate:true})
+              for(let j in rl[i].auths){
+                arr.push({id:rl[i].auths[j].pk_id,name:'——'+rl[i].auths[j].name,auth_id:rl[i].auths[j].pk_id,cate_id:rl[i].auths[j].cate_id,api_url:rl[i].auths[j].api_url,remarks:'无',ut:rl[i].auths[j].create_datetime,iscate:false})
+              }
+            }
+            global.authList = res.data
+            that.cates = res.data
+            that.tableData = arr
+          }else{
+            that.$message({
+              type: 'error',
+              message: res.msg
+            })
+          }
+        })
+      }
+
     },
     filterChange(e){
       let temp = -1
       let arr = this.wheres
       let resArr = e['user_state']
-      
+
       for(let i in resArr){
         if(resArr[i].indexOf("'")<0){
           resArr[i] = "'"+resArr[i]+"'"
-        } 
+        }
       }
-      
+
       let sq = 'user_state in ('+resArr+')'
       for(let i in arr){
         if(arr[i].label == 'user_state'){
           temp = i
         }
       }
-      
+
       if(resArr.length == 0){
         if(temp != -1){
           this.wheres.splice(temp,1)
@@ -85,7 +100,7 @@ let list = {
           this.wheres[temp].value = sq
         }
       }
-      
+
       this.getList()
     },
     changeUserState(state){
@@ -101,8 +116,8 @@ let list = {
           that.$message({
             type: 'info',
             message: '已取消删除'
-          });          
-        });        
+          });
+        });
       }else{
         that.update('user/state/'+state,{ids:that.filterIds().toString()})
       }

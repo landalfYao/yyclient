@@ -8,6 +8,7 @@ const request = require("request");
 const yzy = {
   systemName:'yzy管理系统',
   NODE_API:'http://localhost:3000/api/',
+
   pageSize:[
     {label:'每页10条',value:10},
     {label:'每页20条',value:20},
@@ -69,21 +70,21 @@ const yzy = {
   },
   //getToken
   getToken(cb){
-    
+
       this.http('user/login','POST',{
         username: sessionStorage.getItem('username'),
         password: sessionStorage.getItem('pwd')
       },function(res){
         if(res.code == 1){
-          
+
           sessionStorage.setItem('token',res.token)
           cb(true)
         }else{
           cb(false)
         }
       })
-    
-    
+
+
   },
   //post
   post(url,data,cb){
